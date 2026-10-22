@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentPay AI — Autonomous Agentic Commerce &amp; Escrow Protocol (PayPal AI Hackathon)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paypal: {
+              blue: '#003087',
+              sky: '#0079C1',
+              dark: '#001C64',
+              accent: '#00CFDE'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .glow-blue { box-shadow: 0 0 25px rgba(0, 121, 193, 0.25); }
+    .glow-cyan { box-shadow: 0 0 25px rgba(0, 207, 222, 0.2); }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-paypal-sky selection:text-white">
+
+  <!-- Top Global Header -->
+  <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-paypal-blue via-paypal-sky to-paypal-accent flex items-center justify-center shadow-lg shadow-paypal-sky/20">
+          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.82.872 4.965-.015.074-.032.148-.052.222-1.077 4.966-4.402 7.003-8.883 7.003h-2.17l-.887 5.626a.64.64 0 0 1-.632.536l.68-4.312z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-lg font-bold tracking-tight text-white">AgentPay AI</h1>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-paypal-sky/15 text-paypal-accent border border-paypal-sky/30">PayPal AI Hackathon 2026</span>
+          </div>
+          <p class="text-xs text-slate-400">Autonomous Agentic Commerce &amp; Escrow Guard Protocol</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <button onclick="simulateAgentSwarm()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-paypal-sky to-paypal-accent text-slate-950 font-bold text-xs hover:opacity-90 transition flex items-center space-x-1.5 shadow-md shadow-paypal-sky/20">
+          <span>⚡</span>
+          <span>Simulate Agent Swarm</span>
+        </button>
+        <a href="https://github.com/satanic47/agentpay-ai" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 font-semibold transition flex items-center space-x-1.5">
+          <span>GitHub</span>
+          <span>🐙</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero & Metric Stats Bar -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    
+    <!-- Hero Banner -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900/90 to-paypal-dark/40 border border-slate-800 p-6 sm:p-8 glow-blue">
+      <div class="max-w-3xl space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-paypal-sky/10 border border-paypal-sky/30 text-paypal-accent text-xs font-semibold">
+          <span class="w-2 h-2 rounded-full bg-paypal-accent animate-ping"></span>
+          <span>Targeting $5,000 "Best Use of Agentic Commerce" Track</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+          Empowering Autonomous AI Agents to Transact Safely with PayPal
+        </h2>
+        <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
+          Autonomous agents shouldn't hold unmonitored corporate credit cards. <strong>AgentPay</strong> sits between your multi-agent mesh and PayPal Sandbox APIs: enforcing daily budget caps, semantic capability whitelisting, cryptographic work verification, and instant PayPal Orders &amp; Payout releases.
+        </p>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-800/80">
+        <div class="bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Escrow Volume</div>
+          <div id="statVolume" class="text-xl sm:text-2xl font-black text-white mt-1">${{ stats.total_escrow_volume_usd }}</div>
+          <div class="text-[10px] text-emerald-400 mt-1 flex items-center gap-1 font-mono">● PayPal Orders v2</div>
+        </div>
+        <div class="bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Autonomous Rate</div>
+          <div id="statAutoRate" class="text-xl sm:text-2xl font-black text-paypal-accent mt-1">{{ stats.auto_approved_rate }}</div>
+          <div class="text-[10px] text-slate-400 mt-1 font-mono">Zero-friction clearance</div>
+        </div>
+        <div class="bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Escalated to Human</div>
+          <div id="statEscalated" class="text-xl sm:text-2xl font-black text-amber-400 mt-1">{{ stats.escalated_count }}</div>
+          <div class="text-[10px] text-slate-400 mt-1 font-mono">Policy boundary guard</div>
+        </div>
+        <div class="bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Settled Payouts</div>
+          <div id="statSettled" class="text-xl sm:text-2xl font-black text-emerald-400 mt-1">{{ stats.settled_payouts_count }}</div>
+          <div class="text-[10px] text-slate-400 mt-1 font-mono">PayPal Payouts v1</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Workspace: Human Policy Manager + Live Agent Feed -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Left: Spending Policy Configuration -->
+      <div class="lg:col-span-1 space-y-6">
+        <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 space-y-5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>🛡️</span>
+              <span>Supervisor Policy Guard</span>
+            </h3>
+            <span class="text-[11px] font-mono text-paypal-accent">agent_coder_01</span>
+          </div>
+
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Configure hard semantic boundaries for your autonomous agents before they hit PayPal Sandbox.
+          </p>
+
+          <form id="policyForm" onsubmit="savePolicy(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Daily Budget Limit ($ USD)</label>
+              <input type="number" id="dailyBudget" value="100.00" step="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:border-paypal-sky outline-none font-mono">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Per-Transaction Cap ($ USD)</label>
+              <input type="number" id="perTxCap" value="30.00" step="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:border-paypal-sky outline-none font-mono">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Auto-Approve Threshold ($ USD)</label>
+              <input type="number" id="autoApproveThreshold" value="15.00" step="1" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:border-paypal-sky outline-none font-mono">
+              <span class="text-[10px] text-slate-500">Purchases &le; this amount lock directly into PayPal Escrow.</span>
+            </div>
+
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition">
+              Update Agent Policy
+            </button>
+          </form>
+        </div>
+
+        <!-- Manual Procurement Tester -->
+        <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <span>🤖</span>
+            <span>Trigger Agent Request</span>
+          </h3>
+
+          <form id="purchaseForm" onsubmit="dispatchAgentRequest(event)" class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Target Capability</label>
+              <select id="reqCapability" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:border-paypal-sky outline-none">
+                {% for cap in capabilities %}
+                <option value="{{ cap }}">{{ cap }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Description</label>
+              <input type="text" id="reqDescription" value="Rent 1hr NVIDIA A100 GPU cluster" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white outline-none">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Amount ($ USD)</label>
+                <input type="number" id="reqAmount" value="14.50" step="0.5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Vendor Email</label>
+                <input type="email" id="reqVendorEmail" value="gpu-vendor@paypal.sandbox" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono outline-none">
+              </div>
+            </div>
+
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-paypal-sky hover:bg-paypal-blue text-white text-xs font-bold transition shadow-md shadow-paypal-sky/20">
+              Submit to AgentPay Protocol
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right: Live Transaction & Escrow Feed -->
+      <div class="lg:col-span-2 space-y-6">
+        <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span>📋</span>
+                <span>Live Agentic Escrow Vault</span>
+              </h3>
+              <p class="text-xs text-slate-400">Real-time status of agent-to-agent transactions &amp; PayPal Sandbox settlements.</p>
+            </div>
+            <button onclick="refreshFeed()" class="text-xs text-paypal-accent hover:underline flex items-center gap-1 font-semibold">
+              <span>↻</span>
+              <span>Refresh</span>
+            </button>
+          </div>
+
+          <div id="escrowList" class="space-y-3.5">
+            {% if escrows %}
+              {% for esc in escrows %}
+              <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-3 transition hover:border-slate-700">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-xs font-mono font-bold text-paypal-accent">{{ esc.request.buyer_agent_name }}</span>
+                      <span class="text-slate-500">→</span>
+                      <span class="text-xs font-mono font-bold text-slate-300">{{ esc.request.vendor_agent_name }}</span>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white mt-1">{{ esc.request.item_description }}</h4>
+                    <div class="text-[11px] text-slate-400 font-mono mt-0.5">{{ esc.request.capability }} • Vendor: {{ esc.request.vendor_paypal_email }}</div>
+                  </div>
+
+                  <div class="text-right">
+                    <div class="text-base font-bold text-white font-mono">${{ "%.2f"|format(esc.request.amount_usd) }}</div>
+                    {% if esc.status.value == "ESCROW_LOCKED" %}
+                    <span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-paypal-sky/20 text-paypal-accent border border-paypal-sky/40">🔒 Escrow Locked</span>
+                    {% elif esc.status.value == "SETTLED_PAYOUT" %}
+                    <span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">✓ Settled Payout</span>
+                    {% elif esc.status.value == "ESCALATED_TO_HUMAN" %}
+                    <span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40">⚠️ Needs Human Sign-Off</span>
+                    {% else %}
+                    <span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">{{ esc.status.value }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <!-- Telemetry & Actions -->
+                <div class="pt-3 border-t border-slate-900 flex flex-wrap items-center justify-between text-xs gap-2">
+                  <div class="text-[11px] text-slate-500 font-mono">
+                    {% if esc.paypal_order_id %}Order: <span class="text-slate-300">{{ esc.paypal_order_id }}</span>{% endif %}
+                    {% if esc.paypal_payout_batch_id %} • Payout: <span class="text-emerald-400">{{ esc.paypal_payout_batch_id }}</span>{% endif %}
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    {% if esc.status.value == "ESCALATED_TO_HUMAN" and not esc.human_approved %}
+                    <button onclick="approveEscrow('{{ esc.escrow_id }}')" class="px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[11px] transition">
+                      Human Approve ✓
+                    </button>
+                    {% endif %}
+
+                    {% if esc.status.value == "ESCROW_LOCKED" %}
+                    <button onclick="settleEscrow('{{ esc.escrow_id }}')" class="px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-[11px] transition">
+                      Verify &amp; Payout 🚀
+                    </button>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            {% else %}
+              <div class="text-center py-12 text-slate-500 text-sm">
+                No active agent purchases yet. Click <strong>"Simulate Agent Swarm"</strong> above to see autonomous agentic commerce in action!
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 py-6 mt-12 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        Built for the <a href="https://paypalaihackathon.devpost.com" target="_blank" class="text-paypal-accent hover:underline">PayPal AI Hackathon 2026</a> on Devpost
+      </div>
+      <div class="font-mono text-slate-400">
+        PayPal Orders v2 • Payouts v1 • FastAPI • Render
+      </div>
+    </div>
+  </footer>
+
+  <!-- Frontend Logic -->
+  <script>
+    async function refreshFeed() {
+      const res = await fetch('/api/escrows');
+      const escrows = await res.json();
+      const statsRes = await fetch('/api/stats');
+      const stats = await statsRes.json();
+
+      document.getElementById('statVolume').textContent = '$' + stats.total_escrow_volume_usd.toFixed(2);
+      document.getElementById('statAutoRate').textContent = stats.auto_approved_rate;
+      document.getElementById('statEscalated').textContent = stats.escalated_count;
+      document.getElementById('statSettled').textContent = stats.settled_payouts_count;
+
+      const container = document.getElementById('escrowList');
+      if (escrows.length === 0) {
+        container.innerHTML = '<div class="text-center py-12 text-slate-500 text-sm">No transactions yet.</div>';
+        return;
+      }
+
+      container.innerHTML = escrows.map(esc => {
+        let badgeHtml = '';
+        if (esc.status === 'ESCROW_LOCKED') {
+          badgeHtml = '<span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-paypal-sky/20 text-paypal-accent border border-paypal-sky/40">🔒 Escrow Locked</span>';
+        } else if (esc.status === 'SETTLED_PAYOUT') {
+          badgeHtml = '<span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">✓ Settled Payout</span>';
+        } else if (esc.status === 'ESCALATED_TO_HUMAN') {
+          badgeHtml = '<span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40">⚠️ Needs Human Sign-Off</span>';
+        } else {
+          badgeHtml = `<span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">${esc.status}</span>`;
+        }
+
+        let actionBtns = '';
+        if (esc.status === 'ESCALATED_TO_HUMAN' && !esc.human_approved) {
+          actionBtns += `<button onclick="approveEscrow('${esc.escrow_id}')" class="px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[11px] transition">Human Approve ✓</button>`;
+        }
+        if (esc.status === 'ESCROW_LOCKED') {
+          actionBtns += `<button onclick="settleEscrow('${esc.escrow_id}')" class="px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-[11px] transition">Verify & Payout 🚀</button>`;
+        }
+
+        return `
+          <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-3 transition hover:border-slate-700">
+            <div class="flex items-start justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-mono font-bold text-paypal-accent">${esc.request.buyer_agent_name}</span>
+                  <span class="text-slate-500">→</span>
+                  <span class="text-xs font-mono font-bold text-slate-300">${esc.request.vendor_agent_name}</span>
+                </div>
+                <h4 class="text-sm font-semibold text-white mt-1">${esc.request.item_description}</h4>
+                <div class="text-[11px] text-slate-400 font-mono mt-0.5">${esc.request.capability} • Vendor: ${esc.request.vendor_paypal_email}</div>
+              </div>
+              <div class="text-right">
+                <div class="text-base font-bold text-white font-mono">$${esc.request.amount_usd.toFixed(2)}</div>
+                ${badgeHtml}
+              </div>
+            </div>
+            <div class="pt-3 border-t border-slate-900 flex flex-wrap items-center justify-between text-xs gap-2">
+              <div class="text-[11px] text-slate-500 font-mono">
+                ${esc.paypal_order_id ? 'Order: <span class="text-slate-300">' + esc.paypal_order_id + '</span>' : ''}
+                ${esc.paypal_payout_batch_id ? ' • Payout: <span class="text-emerald-400">' + esc.paypal_payout_batch_id + '</span>' : ''}
+              </div>
+              <div class="flex items-center gap-2">${actionBtns}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function simulateAgentSwarm() {
+      await fetch('/api/sandbox/simulate-swarm', { method: 'POST' });
+      await refreshFeed();
+    }
+
+    async function approveEscrow(escrowId) {
+      await fetch('/api/escrow/approve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ escrow_id: escrowId })
+      });
+      await refreshFeed();
+    }
+
+    async function settleEscrow(escrowId) {
+      await fetch('/api/escrow/settle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ escrow_id: escrowId, proof: 'valid_work_proof_' + Date.now() })
+      });
+      await refreshFeed();
+    }
+
+    async function dispatchAgentRequest(e) {
+      e.preventDefault();
+      const payload = {
+        buyer_agent_id: 'agent_coder_01',
+        buyer_agent_name: 'AutoDev Copilot',
+        vendor_agent_id: 'vendor_node_' + Math.floor(Math.random()*100),
+        vendor_agent_name: 'Compute Vendor Node',
+        capability: document.getElementById('reqCapability').value,
+        item_description: document.getElementById('reqDescription').value,
+        amount_usd: parseFloat(document.getElementById('reqAmount').value),
+        vendor_paypal_email: document.getElementById('reqVendorEmail').value
+      };
+      await fetch('/api/purchase/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      await refreshFeed();
+    }
+
+    async function savePolicy(e) {
+      e.preventDefault();
+      const payload = {
+        agent_id: 'agent_coder_01',
+        daily_budget_usd: parseFloat(document.getElementById('dailyBudget').value),
+        per_tx_max_usd: parseFloat(document.getElementById('perTxCap').value),
+        auto_approve_threshold_usd: parseFloat(document.getElementById('autoApproveThreshold').value),
+        require_human_confirmation_over_usd: parseFloat(document.getElementById('perTxCap').value)
+      };
+      await fetch('/api/policy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      alert('Policy guard updated successfully!');
+    }
+  </script>
+</body>
+</html>
